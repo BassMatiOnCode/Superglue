@@ -5,9 +5,9 @@ Like the well-kown cyano-acrylate glue, it should be possible to bind HTML eleme
 
 Bindable elements are text and attribute nodes -- that should cover almost every requirement.
 
-Supported is property binding for simple objects, and list binding for arrays.
+Supported is property binding for simple objects, and list binding for arrays and array-like objects.
 
-Database backends are planned and will be implemented after the core binding functionality is done. Not sure whether that should be integrated into this project, maybe it is better to rely on external and well-known packages. However, write-access to a data source property shall create a copy of the original value, so it should be easy to detect changed or inserted data, and generate SQL insert and update statements, or call the related stored procedures, or make a REST request.
+Integration of database backends is planned and will be implemented after the core binding functionality is done. Not sure whether that should be integrated into this project, maybe it is better to rely on external and well-known packages. However, write-access to a data source property shall create a copy of the original value, so it should be easy to detect changed or inserted data, and generate SQL insert and update statements, or call the related stored procedures, or make a REST request.
 
 Contributors welcome.
 
