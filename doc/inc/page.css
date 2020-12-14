@@ -1,0 +1,21 @@
+/*
+ *	page.css
+ *	2020-11-29 usp
+ */
+
+@import url(./colors.css);
+body {
+	font-family : "Segoe UI", Verdana, Arial, Hevetica ;
+	margin: 40px 20px 40px 40px ;
+	line-height: 160% ;
+}
+
+pre { 
+	margin-left : 0px ; 
+	line-height: 120% ;
+	border : 1px solid silver;
+	padding : 10px 5px 11px 10px;
+	overflow: auto;
+}
+
+

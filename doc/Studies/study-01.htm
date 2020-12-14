@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html><head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../inc/page.css" />
+<link rel="stylesheet" href="../inc/colors.css" />
+</head><body>
+
+
+<h1>Study 1 &ndash; Tree Walker</h1>
+
+<div style="border: 1px solid silver; padding-left: 10px; padding-bottom: 10px;">
+<template>
+<p bind>{{state.person.firstName}} {{state.person.lastName}}</p>
+</template>
+
+<p id="234" gender="{{person.gender}}">This is {{Person.firstName}}.</p>
+
+<div bind><span>{{state.person.firstName}}</span> <span>{{state.person.lastName}}</span></div>
+
+</div>
+
+<script>
+debugger;
+// Regex to test for placeholders
+var placeholderTest = new RegExp("\\{\\{([a-zA-Z0-9_.]+)\\.(\\w+){1}\\}\\}" );
+
+// TreeWalker test function
+var testNode = function ( node ) {
+	let result;
+	switch ( node.nodeType ) {
+	case Node.ELEMENT_NODE:
+		console.log( node.attributes );
+		break;
+	case Node.TEXT_NODE:
+		console.log( node.nodeValue, " " , result=placeholderTest.test( node.nodeValue ));
+		if ( result ) result=placeholderTest.exec(node.nodeValue);
+		break;
+		} ;
+	return NodeFilter.FILTER_ACCEPT; 
+	} ;
+
+var treeWalker = document.createTreeWalker( document.body, NodeFilter.SHOW_ELEMENT + NodeFilter.SHOW_TEXT, { acceptNode : testNode }, false ) ;
+
+var currentNode = treeWalker.currentNode;
+while(currentNode) {
+  // nodeList.push(currentNode);
+  currentNode = treeWalker.nextNode();
+}
+</script>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<p>This study evaluates the JavaScript TreeWalker to search the document for {{placeholder patterns}}.</p>
+
+<p class="note">NOTE: Open the browser developer tools (ctrl-shift-i) to inspect and debug the code!</p>
+
+<p>The page contains the following HTML code:</p>
+
+<pre>
+&lt;template&gt;
+&lt;p bind&gt;{{state.person.firstName}} {{state.person.lastName}}&lt;/p&gt;
+&lt;/template&gt;
+
+&lt;p id="234" gender="{{person.gender}}"&gt;This is {{Person.firstName}}.&lt;/p&gt;
+
+&lt;div bind&gt;&lt;span&gt;{{state.person.firstName}}&lt;/span&gt; &lt;span&gt;{{state.person.lastName}}&lt;/span&gt;&lt;/div&gt;
+</pre>
+
+<p>There are several elements with the <tt>bind</tt> attribute and placeholder patterns, enclosed in double curly braces. This regular expression is used to match them and disect them into pieces:</p>
+
+<pre>
+var placeholderTest = new RegExp("\\{\\{([a-zA-Z0-9_.]+)\\.(\\w+){1}\\}\\}" );
+</pre>
+
+<p>The script code below creates a test function for the TreeWalker. The regular expression is used to match the content of text nodes:</p>
+
+<pre>
+var testNode = function ( node ) {
+  switch ( node.nodeType ) {
+  case Node.ELEMENT_NODE:
+    console.log( node.attributes );
+    break;
+  case Node.TEXT_NODE:
+    console.log( node.nodeValue, " " , placeholderTest.exec( node.nodeValue ));
+    break;
+    } ;
+  return NodeFilter.FILTER_ACCEPT; 
+  } ;
+</pre>
+
+<p>A TreeWalker is instantiated with the document body as start node. Only HTML element and text nodes are recognized. The test function is passed in the options argument:</p>
+
+<pre>
+var treeWalker = document.createTreeWalker( document.body, NodeFilter.SHOW_ELEMENT + NodeFilter.SHOW_TEXT, { acceptNode : testNode }, false ) ;
+</pre>
+
+<p>This piece of code creates and runs the TreeWalker:</p>
+
+<pre>
+var currentNode = treeWalker.currentNode;
+while( currentNode ) {
+  currentNode = treeWalker.nextNode();
+}
+</pre>
+
+<p>When a match occurs, the placeholder is split into two components, the binding path to the data source (state.person), and the property name (firstName):</p>
+
+<pre>
+0: "{{state.person.firstName}}"
+1: "state.person"
+2: "firstName"
+groups: undefined
+index: 19
+length: 3
+</pre>
+
+<p>The test shows that the regular expression works, and that template elements are recognizes as well.</p>
+
+</body></html>

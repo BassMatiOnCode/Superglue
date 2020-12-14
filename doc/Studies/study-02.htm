@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html><head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../inc/page.css" />
+<link rel="stylesheet" href="../inc/colors.css" />
+</head><body>
+
+<h1>Study 1 &ndash; Two-way Databinding</h1>
+
+<p>This study evaluates the standard databining examples as found all over the web.</p>
+<p>NOTE: </p>
+
+<template>
+<p bind>{{state.person.firstName}} {{state.person.lastName}}</p>
+</template>
+
+<p><input id="123" type="text" value="John Doe" data-gender="male"/></p>
+
+<p id="234" gender="{{person.gender}}">This is {{Person.firstName}}.</p>
+<div bind><div>{{state.person.firstName}}</div> <div>{{state.person.lastName}}</div></div>
+
+<script>// Traversing with the treewalker
+// Regex to test for placeholders
+var placeholderTest = new RegExp("\\{\\{([a-zA-Z0-9_.]+)\\.(\\w+){1}\\}\\}" );
+
+var testNode = function ( node ) {
+	switch ( node.nodeType ) {
+	case Node.ELEMENT_NODE:
+		console.log( node.attributes );
+		break;
+	case Node.TEXT_NODE:
+		console.log( node.nodeValue, " " , placeholderTest.test( node.nodeValue ));
+		break;
+		} ;
+	return NodeFilter.FILTER_ACCEPT; 
+	} ;
+
+var treeWalker = document.createTreeWalker( document.body, NodeFilter.SHOW_ELEMENT + NodeFilter.SHOW_TEXT, { acceptNode : testNode }, false ) ;
+
+var currentNode = treeWalker.currentNode;
+while(currentNode) {
+  // nodeList.push(currentNode);
+  currentNode = treeWalker.nextNode();
+}
+
+</script>
+
+<script>
+debugger;
+var e = document.getElementById("234");
+var result = re.exec(e.getAttribute("gender"));
+Node.prototype.findElementsWithAttributeValue = function( re ){
+	var matches = [ ];
+	var traverse = function( parent ) {
+	    parent.childNodes.forEach( (node) => {
+	    	console.log( node.nodeType );
+			switch ( node.nodeType ) { 
+			case Node.ATTRIBUTE_NODE :
+				if ( re.test( node.value )) matches.push( node );
+				break; 
+			case Node.ELEMENT_NODE :
+				traverse( node ) ;
+				break;  } } ) } ; 
+	traverse( this );
+	return matches;  } ;
+
+var matches = document.body.findElementsWithAttributeValue( new RegExp("\\{\\{([a-zA-Z0-9_.]+)\\.(\\w+){1}\\}\\}" ));
+</script>
+
+<script>
+
+let o = document.getElementById("123");
+console.log(o.value);
+console.log(o.dataset.gender);
+let d = document.querySelector("[bind]");
+console.log(d.innerText);
+console.log(d.innerHTML);
+let templates = document.getElementsByTagName( "template" );
+// Find placeholders in the body text and enclose in span tags.
+var re = new RegExp("\\{\\{([a-zA-Z0-9_.]+)\\.(\\w+){1}\\}\\}", "g");
+for ( let i = 0 ; i < templates.length ; i ++ ) {
+	let template = templates[ i ];
+	template.innerHTML = template.innerHTML.replace( re, '<span data-source="$1" data-member="$2">placeholder</span>');
+	let clone = template.content.cloneNode( true );
+	document.body.appendChild( clone );
+	console.log( template.innerHTML) ; 
+	} ;
+</script>
+</body></html>
