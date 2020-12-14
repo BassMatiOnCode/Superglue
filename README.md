@@ -9,6 +9,10 @@ Supported is property binding for simple objects, and list binding for arrays an
 
 Integration of database backends is planned and will be implemented after the core binding functionality is done. Not sure whether that should be integrated into this project, maybe it is better to rely on external and well-known packages. However, write-access to a data source property shall create a copy of the original value, so it should be easy to detect changed or inserted data, and generate SQL insert and update statements, or call the related stored procedures, or make a REST request.
 
+## Documentation
+
+Download or clone the doc folder, then open the HTML files in a web browser with the developer tools opened. The scripts are explained in the text, and you can follow along with live debugging.
+
 Contributors welcome.
 
 Best wishes, and stay healthy!
